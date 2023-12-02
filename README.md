@@ -25,12 +25,12 @@ docker run -p 8080:8080 -v ./blobforge-storage/:/app/blobs/ blobforge:latest
 
 or using Docker Compose: 
 ```yaml
+version: '3.1'
 services:
   blobforge:
     image: rwslinkman/blobforge:latest
     environment:
       BLOBFORGE_VOLUME: /app/blobs/
-      BLOBFORGE_ADMIN_KEY: "abcdefghijklmnop"
     ports:
       - "8080:8080"
     volumes:
@@ -67,5 +67,6 @@ curl --location --request PUT 'http://localhost:8080/json/my-blob' \
 Fetch your data when you need it: 
 
 ```shell
-curl --location --request GET 'http://localhost:8080/json/my-blob' --header 'X-API-Key: <your-api-key>'
+curl --location --request GET 'http://localhost:8080/json/my-blob' \
+--header 'X-API-Key: <your-api-key>'
 ```
