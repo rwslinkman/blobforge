@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  blobforge:
+    container_name: blobforge
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      BLOBFORGE_VOLUME: /app/blobs/
+      BLOBFORGE_ADMIN_KEY: "abcdefghijklmnop"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./blobforge-storage:/app/blobs/
