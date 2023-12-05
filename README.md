@@ -37,6 +37,53 @@ services:
       - ./blobforge-storage:/app/blobs/
 ```
 
+or using Kubernetes:
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: blobforge-data-pvc
+  namespace: my-namespace
+spec:
+  storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: Deployment
+metadata:
+  name: blobforge
+  namespace: my-namespace
+spec:
+  selector:
+    matchLabels:
+      app: blobforge
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: blobforge
+    spec:
+      volumes:
+        - name: blobforge-data-volume
+          persistentVolumeClaim:
+            claimName: blobforge-data-pvc
+      containers:
+        - name: blobforge
+          image: docker.io/rwslinkman/blobforge:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BLOBFORGE_VOLUME
+              value: /app/blobs/
+          volumeMounts:
+            - mountPath: /app/blobs/
+              name: blobforge-data-volume
+```
+
 ### Initialize a storage account 
 You can choose an API key to configure a storage account.   
 
