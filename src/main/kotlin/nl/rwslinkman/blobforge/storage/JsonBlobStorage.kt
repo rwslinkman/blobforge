@@ -57,7 +57,6 @@ class JsonBlobStorage(private val basePath: File) {
         if (!isValidBlobName(blobName)) throw BlobException("Blob name does not meet expectations")
 
         if (!isValidJSON(blob)) throw BlobException("Unable to store invalid JSON")
-        println("valid json")
 
         val blobFile = File(keyDir, "$blobName.json")
         if(!blobFile.exists()) {

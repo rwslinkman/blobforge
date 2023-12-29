@@ -3,7 +3,8 @@ Easy-to-use JSON blob storage behind a REST API
 
 ## About
 Store JSON blob data persistently using REST calls.   
-Works with any language that supports HTTP.
+Works with any language that supports HTTP.   
+This is by no means a professional database solution, but might be useful for demo or proof-of-concept purposes.   
 
 Supported routes:
 ```
@@ -52,6 +53,7 @@ spec:
     requests:
       storage: 1Gi
 ---
+apiVersion: v1
 kind: Deployment
 metadata:
   name: blobforge
