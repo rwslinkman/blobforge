@@ -1,14 +1,12 @@
-name: Pull Request Checks
+name: BlobForge Pull Request Checks
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
     branches: [ "main" ]
-  push:
-    branches: [ "feature/github-actions-main" ] # for testing
 
 jobs:
   verify-pr-quality:
+    name: "Verify code quality for pull request"
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -30,6 +28,7 @@ jobs:
         run: docker build  .
 
   verify-pr-title:
+    name: "Verify PR title for semantic release"
     runs-on: ubuntu-22.04
     steps:
       - name: Verify Pull Request Title

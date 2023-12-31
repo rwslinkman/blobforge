@@ -1,11 +1,12 @@
-name: BlobFore Build & Release pipeline
+name: BlobForge Build & Release pipeline
 
 on:
   push:
     branches: [ "main", "feature/github-actions-main" ]
 
 jobs:
-  build-and-release:
+  blobforge-build:
+    name: "Build pipeline"
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -17,33 +18,22 @@ jobs:
           distribution: 'temurin'
           java-version: '17' # Modify this to your required JDK version
 
-      - name: Run Gradle tests
+      - name: Verify JUnit tests with Gradle
         run: ./gradlew test
 
-      - name: Build JAR
+      - name: Verify buildable JAR
         run: ./gradlew build
 
-      - name: Build Docker image
-        run: |
-          docker build  .
-#
-#      - name: Semantic Release
-#        run: |
-#          # Run your semantic release commands here
-#
-#      - name: Get the latest version
-#        id: get_version
-#        run: echo ::set-output name=VERSION::$(semantic-release-command-to-get-version)
-#
-#      - name: Rebuild JAR with new version
-#        run: ./gradlew build -Pversion=${{ steps.get_version.outputs.VERSION }}
-#
-#      - name: Rebuild Docker image with new version
-#        run: |
-#          docker build -t your-docker-image-name .
-#          docker tag your-docker-image-name your-dockerhub-username/your-docker-image-name:${{ steps.get_version.outputs.VERSION }}
-#
-#      - name: Push to Docker Hub
-#        run: |
-#          docker push your-dockerhub-username/your-docker-image-name:latest
-#          docker push your-dockerhub-username/your-docker-image-name:${{ steps.get_version.outputs.VERSION }}
+      - name: Verify buildable Docker image
+        run: docker build  .
+
+  # TODO: Manually triggered step
+  semantic-release:
+    name: "Semantic release procedure"
+    needs:
+      - blobforge-build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # TODO: Semantic release steps
