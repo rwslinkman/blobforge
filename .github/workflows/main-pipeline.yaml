@@ -1,0 +1,49 @@
+name: BlobFore Build & Release pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17' # Modify this to your required JDK version
+
+      - name: Run Gradle tests
+        run: ./gradlew test
+
+      - name: Build JAR
+        run: ./gradlew build
+
+      - name: Build Docker image
+        run: |
+          docker build -t your-docker-image-name .
+          docker tag your-docker-image-name your-dockerhub-username/your-docker-image-name:latest
+#
+#      - name: Semantic Release
+#        run: |
+#          # Run your semantic release commands here
+#
+#      - name: Get the latest version
+#        id: get_version
+#        run: echo ::set-output name=VERSION::$(semantic-release-command-to-get-version)
+#
+#      - name: Rebuild JAR with new version
+#        run: ./gradlew build -Pversion=${{ steps.get_version.outputs.VERSION }}
+#
+#      - name: Rebuild Docker image with new version
+#        run: |
+#          docker build -t your-docker-image-name .
+#          docker tag your-docker-image-name your-dockerhub-username/your-docker-image-name:${{ steps.get_version.outputs.VERSION }}
+#
+#      - name: Push to Docker Hub
+#        run: |
+#          docker push your-dockerhub-username/your-docker-image-name:latest
+#          docker push your-dockerhub-username/your-docker-image-name:${{ steps.get_version.outputs.VERSION }}

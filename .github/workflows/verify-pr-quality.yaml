@@ -3,6 +3,7 @@ name: Pull Request Checks
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [ "main" ]
 
 jobs:
   unit-tests:
@@ -10,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17' # Modify this to your required JDK version
+          java-version: '17'
 
       - name: Run Gradle tests
         run: ./gradlew test
