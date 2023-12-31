@@ -1,0 +1,29 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17' # Modify this to your required JDK version
+
+      - name: Run Gradle tests
+        run: ./gradlew test
+
+      - name: Verify Pull Request Title
+        run: |
+          PR_TITLE=$(jq -r ".pull_request.title" "$GITHUB_EVENT_PATH")
+          if [[ "$PR_TITLE" != *"feat|fix|break|api|docs|ci"* ]]; then
+            echo "Pull request title does not match the expected format."
+            exit 1
+          fi
