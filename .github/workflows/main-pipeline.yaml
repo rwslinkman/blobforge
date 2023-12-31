@@ -25,8 +25,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t your-docker-image-name .
-          docker tag your-docker-image-name your-dockerhub-username/your-docker-image-name:latest
+          docker build  .
 #
 #      - name: Semantic Release
 #        run: |
