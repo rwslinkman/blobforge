@@ -37,6 +37,6 @@ jobs:
             echo "Pull request title complies with semantic release restrictions"
             exit 0
           else 
-            echo "Pull request does not match semantic release restrictions
+            echo "Pull request does not match semantic release restrictions"
             exit 1
           fi
