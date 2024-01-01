@@ -1,4 +1,4 @@
-name: BlobForge Build & Release pipeline
+name: BlobForge Build pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   blobforge-build:
-    name: "Build pipeline"
+    name: "Verify project status of main branch"
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17' # Modify this to your required JDK version
+          java-version: '17'
 
       - name: Verify JUnit tests with Gradle
         run: ./gradlew test
@@ -26,14 +26,3 @@ jobs:
 
       - name: Verify buildable Docker image
         run: docker build  .
-
-  # TODO: Manually triggered step
-  semantic-release:
-    name: "Semantic release procedure"
-    needs:
-      - blobforge-build
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      # TODO: Semantic release steps
