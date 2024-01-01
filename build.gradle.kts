@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
+import java.nio.file.Files
+
 plugins {
     kotlin("jvm") version "1.9.21"
     id("io.ktor.plugin") version "2.3.6"
@@ -5,7 +8,7 @@ plugins {
 }
 
 group = "nl.rwslinkman"
-version = "1.0.0-SNAPSHOT"
+version = project.findProperty("projVersion") ?: "0.0.0-SNAPSHOT"
 
 application {
     mainClass.set("nl.rwslinkman.blobforge.ApplicationKt")
@@ -35,4 +38,23 @@ tasks.test {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.register("createReadableProjectVersionFile") {
+    group = "compile"
+    doLast {
+        val propFilePath = this.project.file("src/main/resources/version.properties").absolutePath
+        val propFile = File(propFilePath)
+        if(propFile.exists()) {
+            propFile.delete()
+        }
+        propFile.createNewFile()
+        val projectVersion = rootProject.version.toString()
+
+        propFile.writeText("version=$projectVersion")
+    }
+}
+
+tasks.compileKotlin {
+    dependsOn("createReadableProjectVersionFile")
 }

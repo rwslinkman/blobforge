@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew build
 
       - name: Verify buildable Docker image
-        run: docker build  .
+        run: docker build .
 
   semantic-release:
     name: "Semantic release procedure"
@@ -35,6 +35,8 @@ jobs:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
+    outputs:
+      releasedVersion: ${{steps.release_output.outputs.releasedVersion}}
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -51,3 +53,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release@22
+
+      - name: Populate release output
+        id: release_output
+        run: |
+          released_version=$(cat release-version.txt)
+          echo "Released version: $released_version"
+          echo "releasedVersion=$released_version" >> $GITHUB_OUTPUT
+
+  publish:
+    name: "Publish released artifacts"
+    runs-on: ubuntu-22.04
+    needs:
+      - semantic-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build release JAR
+        run: ./gradlew -PprojVersion=${{needs.semantic-release.outputs.releasedVersion}} clean build
+
+      - name: Build release Docker image
+        run: docker build -t rwslinkman/blobforge:${{needs.semantic-release.outputs.releasedVersion}} .
+
+#      - name: Push released Docker image to Docker Hub
+#        run: docker push rwslinkman/blobforge:${{needs.semantic-release.outputs.releasedVersion}}

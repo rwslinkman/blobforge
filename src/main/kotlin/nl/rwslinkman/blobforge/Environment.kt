@@ -1,5 +1,7 @@
 package nl.rwslinkman.blobforge
 
+import java.util.*
+
 object Environment {
 
     val storageBaseDir: String
@@ -13,4 +15,14 @@ object Environment {
         }
 
     val adminApiKey = System.getenv("BLOBFORGE_ADMIN_KEY")
+
+    private val versionProps by lazy {
+        Properties().also {
+            it.load(this.javaClass.getResourceAsStream("/version.properties"))
+        }
+    }
+
+    val version by lazy {
+        versionProps.getProperty("version") ?: "no version"
+    }
 }
