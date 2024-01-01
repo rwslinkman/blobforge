@@ -21,6 +21,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // is used by Ktor
 fun Application.module() {
+    println("BlobForge v${Environment.version}")
     val baseDir = File(Environment.storageBaseDir)
     // ensure base directory exist, else create it
     if (!baseDir.exists()) {

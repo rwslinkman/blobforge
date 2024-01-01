@@ -41,3 +41,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 blobforge-storage
+/src/main/resources/version.properties
