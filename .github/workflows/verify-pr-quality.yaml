@@ -33,8 +33,10 @@ jobs:
     steps:
       - name: Verify Pull Request Title
         run: |
-          PR_TITLE=$(jq -r ".pull_request.title" "$GITHUB_EVENT_PATH")
-          if [[ "$PR_TITLE" != *"feat|fix|break|api|docs|ci"* ]]; then
-            echo "Pull request title does not match the expected format."
+          if [[ "${{ github.event.pull_request.title }}" =~ ^(api|break|feat|fix|docs|refactor|ci) ]]; then
+            echo "Pull request title complies with semantic release restrictions"
+            exit 0
+          else 
+            echo "Pull request does not match semantic release restrictions
             exit 1
           fi
