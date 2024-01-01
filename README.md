@@ -1,5 +1,7 @@
-# BlobForge
-Easy-to-use JSON blob storage behind a REST API   
+# BlobForge 
+[![BlobForge Build pipeline](https://github.com/rwslinkman/blobforge/actions/workflows/main-pipeline.yaml/badge.svg?branch=main)](https://github.com/rwslinkman/blobforge/actions/workflows/main-pipeline.yaml)
+[<img src="https://img.shields.io/badge/dockerhub-released-brightgreen.svg?logo=docker">](https://hub.docker.com/r/rwslinkman/blobforge)   
+Easy-to-use JSON blob storage behind a REST API
 
 ## About
 Store JSON blob data persistently using REST calls.   
