@@ -82,5 +82,11 @@ jobs:
       - name: Build release Docker image
         run: docker build -t rwslinkman/blobforge:${{needs.semantic-release.outputs.releasedVersion}} .
 
-#      - name: Push released Docker image to Docker Hub
-#        run: docker push rwslinkman/blobforge:${{needs.semantic-release.outputs.releasedVersion}}
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push released BlobForge Docker image to Docker Hub
+        run: docker push rwslinkman/blobforge:${{needs.semantic-release.outputs.releasedVersion}}
