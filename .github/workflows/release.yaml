@@ -41,13 +41,10 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Setup semantic-release
-        run: npx semantic-release@22
-
       - name: Checkout project code
         uses: actions/checkout@v4
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release@22
