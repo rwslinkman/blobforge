@@ -39,7 +39,7 @@
         "prepareCmd": "echo '${nextRelease.gitTag}' > release-version.txt"
       }],
       ["@semantic-release/github", {
-        "failComment": false
+        "failTitle": "Unable to perform semantic release for BlobForge"
       }]
     ]
   }
