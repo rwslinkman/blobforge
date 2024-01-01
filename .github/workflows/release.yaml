@@ -41,6 +41,9 @@ jobs:
         with:
           node-version: "lts/*"
 
+      - name: Install dependencies of semantic release
+        run: npm -g install semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/exec @semantic-release/git @semantic-release/release-notes-generator @semantic-release/github
+
       - name: Checkout project code
         uses: actions/checkout@v4
 
